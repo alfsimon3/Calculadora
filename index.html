@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora</title>
+  <meta charset="utf-8">
+  <script type="text/javascript">
+    
+    let operador;
+    let numtecleado;
+
+    const vaciar = () => {
+      document.getElementById("pantalla").value = ""; 
+    }
+
+    const cuadrado = () => {
+      let num = document.getElementById("pantalla");
+      num.value = num.value * num.value;
+      validar(num);
+      rellenar_info(num);
+    }
+
+    const mod = () => {
+      let num = document.getElementById("pantalla");
+      if (Math.sign(num.value)===1) {
+        num.value = num.value;
+      } else if (Math.sign(num.value)===-1) {
+        num.value = -(num.value);
+      } else if (Math.sign(num.value) === 0) {
+        num.value = 0;
+      } else if (Math.sign(num.value) === -0) {
+        num.value = 0;
+      } else {
+        validar(num);
+      }
+      rellenar_info(num);
+      return num.value;
+    }
+
+    const fact = () => {
+      let num = document.getElementById("pantalla");
+      let fin = num.value;
+      for (let i=1;i<fin;i++) {
+          num.value = num.value * i;
+      }
+      rellenar_info(num);
+      validar(num);
+      return num.value;
+    }
+
+    const rellenar_info = (num) => {
+      if (num.value < 100) {
+        document.getElementById("info").innerHTML="Info: El resultado es menor que 100";
+      } else if (num.value >= 100 && num.value <= 200) {
+        document.getElementById("info").innerHTML="Info: El resultado está entre 100 y 200";
+      } else if(num.value >= 200) {
+        document.getElementById("info").innerHTML="Info: El resultado es superior a 200";
+      } else if(num.value >= 200) {
+        document.getElementById("info").innerHTML="Info: El resultado es superior a 200";
+      } else {
+        document.getElementById("info").innerHTML="Info: Introduce un número válido";
+      }
+    } 
+    
+    const mul = () => {
+      numtecleado = document.getElementById("pantalla").value;
+      operador = "multiplicacion";
+      validar(numtecleado);
+    }
+
+    const add = () => {
+      numtecleado = document.getElementById("pantalla").value;
+      operador = "suma";
+      validar(numtecleado);
+    }
+
+    const eq = () => {
+      let num = document.getElementById("pantalla");
+      if(operador === "suma") {
+        num.value = + (Number(numtecleado) + Number(num.value));
+      } else if (operador === "multiplicacion") {
+        num.value = numtecleado * num.value;
+      }
+      rellenar_info(num);
+      validar(num);
+      return num.value;
+      operador = "";
+      numtecleado = "";
+    }
+
+    const sumatorio = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      let i = 0;
+      let acc = 0;
+      while (i < list.length) {
+      acc += +list[i++];
+      }
+      num.value = acc;
+      rellenar_info(num);
+      validar(num);
+    }
+
+    const ordenaNumeros = (a, b) => {
+      return a > b ? 1 : b > a ? -1 : 0;
+    }
+
+    const ordenar = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      num.value = list.sort(ordenaNumeros);
+      validar(list);
+    }
+
+    const revertir = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      num.value = list.reverse();
+      validar(list);
+    }
+
+    const quitar = () => {
+      let num = document.getElementById("pantalla");
+      let list = num.value.split(",");
+      list.pop();
+      num.value = list;
+      validar(list);
+    }
+    
+    const validar = (num) => {
+      if  ((num.value < 0) || num.value > 0 || num.value === 0 || num[0] < 0 || num[0] > 0) {
+        num.value = num.value;
+      } else {
+        document.getElementById("pantalla").value = "Error";
+      }
+    }
+    //num.value % 1 != 0 || isNan(num.value) || num.value - Math.floor(num.value) != 0
+
+  </script>
+</head>
+  <body>
+    <h1>Calculadora de CORE</h1>
+    Número:
+    <input type="text" id="pantalla" onclick="vaciar()">
+    <h2 id="info" class="grande" title="Info sobre el número">Info sobre el número</h2>
+    <h3>Operaciones unitarias</h3>
+    <button id="cuadrado" onclick="cuadrado()">x<sup>2</sup></button>
+    <button id="modulo" onclick="mod()">|x|</button>
+    <button id="factorial" onclick="fact()">x!</button>
+    <h4>Operaciones binarias</h4>
+    <button id="multiplicacion" onclick="mul()">*</button>
+    <button id="suma" onclick="add()">+</button>
+    <button id="igual" onclick="eq()">=</button>
+    <h4>Operaciones en formato CSV</h4>
+    <button id="sumatorio" onclick="sumatorio()">Σx</button>
+    <button id="ordenar" onclick="ordenar()">ordenar</button>
+    <button id="revertir" onclick="revertir()">revertir</button>
+    <button id="quitar" onclick="quitar()">quitar</button>
+  </body>
+</html>
